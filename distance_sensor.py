@@ -10,6 +10,15 @@ class DistanceSensor:
         self.echo_pin = echo_pin
         GPIO.setup(self.trig_pin, GPIO.OUT)
         GPIO.setup(self.echo_pin, GPIO.IN)
+        t = Thread(target=self.__sensor_daemon, daemon=True)
+        t.start()
+
+    def __sensor_daemon(self):
+        while True:
+            distance = self.distance()
+            if distance <= 10 and distance >= 0:
+                print(f'Distance: {distance} cm')
+            sleep(0.1)
 
     def distance(self):
         try:
