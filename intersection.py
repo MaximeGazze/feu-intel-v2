@@ -1,4 +1,4 @@
-from typing import Any, Optional
+from typing import Optional
 from time import sleep
 
 class Intersection:
@@ -13,8 +13,8 @@ class Intersection:
         :param traffic_lights: A dictionary containing all the traffic lights associated with the intersection
         :param car_sensors: A dictionary containing all the car sensors associated with the intersection
         """
-        self.traffic_lights: dict[str, Any] = traffic_lights
-        self.car_sensors: dict[str, Any] = car_sensors
+        self.traffic_lights: dict[str, int] = traffic_lights
+        self.car_sensors: dict[str, int] = car_sensors
         self.traffic_direction: Optional[str] = None
         for key, value in traffic_lights.items():
             if value is None:
@@ -63,9 +63,6 @@ class Intersection:
             self.change_traffic_direction('Y')
         if notifier.direction in ('W', 'E'):
             self.change_traffic_direction('X')
-    
-    def returnStates(self):
-        return self.traffic_lights
 
 # 4 way intersection configuration
 #       Nn
@@ -88,8 +85,8 @@ class FourWayIntersection(Intersection):
         :param s: South car sensor
         :param e: East car sensor
         """
-        traffic_lights: dict[str, Any] = {'N': N, 'W': W, 'S': S, 'E': E}
-        car_sensors: dict[str, Any] = {'N': n, 'W': w, 'S': s, 'E': e}
+        traffic_lights: dict[str, int] = {'N': N, 'W': W, 'S': S, 'E': E}
+        car_sensors: dict[str, int] = {'N': n, 'W': w, 'S': s, 'E': e}
         Intersection.__init__(self, traffic_lights, car_sensors)
 
 
@@ -112,6 +109,6 @@ class ThreeWayIntersection(Intersection):
         :param s: South car sensor
         :param e: East  car sensor
         """
-        traffic_lights: dict[str, Any] = {'N': N, 'W': W, 'E': E}
-        car_sensors: dict[str, Any] = {'W': w, 'S': s, 'E': e}
+        traffic_lights: dict[str, int] = {'N': N, 'W': W, 'E': E}
+        car_sensors: dict[str, int] = {'W': w, 'S': s, 'E': e}
         Intersection.__init__(self, traffic_lights, car_sensors)

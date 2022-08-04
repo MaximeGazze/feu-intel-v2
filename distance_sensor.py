@@ -8,6 +8,8 @@ class DistanceSensor:
     def __init__(self, trig_pin: int, echo_pin: int):
         self.trig_pin = trig_pin
         self.echo_pin = echo_pin
+        self.direction = None
+        self.intersection = None
         GPIO.setup(self.trig_pin, GPIO.OUT)
         GPIO.setup(self.echo_pin, GPIO.IN)
         t = Thread(target=self.__sensor_daemon, daemon=True)
@@ -18,6 +20,7 @@ class DistanceSensor:
             distance = self.distance()
             if distance <= 10 and distance >= 0:
                 print(f'Distance: {distance} cm')
+                self.intersection.update(self)
             sleep(0.1)
 
     def distance(self):
