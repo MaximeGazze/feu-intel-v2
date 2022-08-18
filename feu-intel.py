@@ -7,24 +7,30 @@ from intersection import FourWayIntersection
 from traffic_light import TrafficLight
 
 GPIO.setmode(GPIO.BCM)
-GPIO.setwarnings(False) 
+GPIO.setwarnings(False)
 
 feu_intel = AliotObj("feu-intel-v2")
 
 intersection = FourWayIntersection(
     TrafficLight(feu_intel, 'lum', 16, 20, 21),
-    None,
-    None,
-    None,
+    TrafficLight(feu_intel, 'lum', 2, 3, 4),
+    TrafficLight(feu_intel, 'lum', 13, 19, 26),
+    TrafficLight(feu_intel, 'lum', 25, 8, 7),
     DistanceSensor(24, 23),
-    None,
-    None,
-    None,
+    DistanceSensor(14, 15),
+    DistanceSensor(5, 6),
+    DistanceSensor(27, 17),
 )
 
 def main():
     while True:
         pass
+        # l.red()
+        # sleep(0)
+        # l.yellow()
+        # sleep(0)
+        # l.green()
+        # sleep(0)
 
 def end():
     GPIO.cleanup()

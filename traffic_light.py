@@ -21,11 +21,12 @@ class TrafficLight:
     @property
     def state(self):
         return self._state
-    
+
     @state.setter
     def state(self, new_state):
         self._state = new_state
-        self.aliot_obj.update_component(self.aliot_id, new_state)
+        if self.aliot_obj != None:
+            self.aliot_obj.update_component(self.aliot_id, new_state)
 
     def red(self) -> None:
         """Change traffic light to red"""
