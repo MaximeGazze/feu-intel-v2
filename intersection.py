@@ -2,7 +2,7 @@ from typing import Optional
 from time import sleep
 
 class Intersection:
-    def __init__(self, traffic_lights, car_sensors):
+    def __init__(self, aliot_obj, traffic_lights, car_sensors):
         """
         The base intersection class used to create intersections to manage traffic.
 
@@ -13,6 +13,7 @@ class Intersection:
         :param traffic_lights: A dictionary containing all the traffic lights associated with the intersection
         :param car_sensors: A dictionary containing all the car sensors associated with the intersection
         """
+        self.aliot_obj = aliot_obj
         self.traffic_lights: dict[str, int] = traffic_lights
         self.car_sensors: dict[str, int] = car_sensors
         self.traffic_direction: Optional[str] = None
@@ -41,8 +42,36 @@ class Intersection:
         for key, value in self.traffic_lights.items():
             if key in ('N', 'S') and direction == 'X':
                 value.yellow()
+                self.aliot_obj.update_doc({'/document/lights_b': {
+                    'N': {
+                        'state': 'yellow'
+                    },
+                    'W': {
+                        'state': 'red'
+                    },
+                    'S': {
+                        'state': 'yellow'
+                    },
+                    'E': {
+                        'state': 'red'
+                    },
+                }})
             elif key in ('W', 'E') and direction == 'Y':
                 value.yellow()
+                self.aliot_obj.update_doc({'/document/lights_b': {
+                    'N': {
+                        'state': 'red'
+                    },
+                    'W': {
+                        'state': 'yellow'
+                    },
+                    'S': {
+                        'state': 'red'
+                    },
+                    'E': {
+                        'state': 'yellow'
+                    },
+                }})
         sleep(change_speed)
         for key, value in self.traffic_lights.items():
             if direction == 'X':
@@ -50,11 +79,39 @@ class Intersection:
                     value.red()
                 elif key in ('W', 'E'):
                     value.green()
+                self.aliot_obj.update_doc({'/document/lights_b': {
+                    'N': {
+                        'state': 'red'
+                    },
+                    'W': {
+                        'state': 'green'
+                    },
+                    'S': {
+                        'state': 'red'
+                    },
+                    'E': {
+                        'state': 'green'
+                    },
+                }})
             elif direction == 'Y':
                 if key in ('N', 'S'):
                     value.green()
                 elif key in ('W', 'E'):
                     value.red()
+                self.aliot_obj.update_doc({'/document/lights_b': {
+                    'N': {
+                        'state': 'green'
+                    },
+                    'W': {
+                        'state': 'red'
+                    },
+                    'S': {
+                        'state': 'green'
+                    },
+                    'E': {
+                        'state': 'red'
+                    },
+                }})
         self.traffic_direction = direction
 
     def update(self, notifier) -> None:
@@ -72,7 +129,7 @@ class Intersection:
 #       Ss
 
 class FourWayIntersection(Intersection):
-    def __init__(self, N, W, S, E, n, w, s, e):
+    def __init__(self, aliot_obj, N, W, S, E, n, w, s, e):
         """
         Four way intersection configuration used to create an :class:`Intersection` object.
 
@@ -87,7 +144,7 @@ class FourWayIntersection(Intersection):
         """
         traffic_lights: dict[str, int] = {'N': N, 'W': W, 'S': S, 'E': E}
         car_sensors: dict[str, int] = {'N': n, 'W': w, 'S': s, 'E': e}
-        Intersection.__init__(self, traffic_lights, car_sensors)
+        Intersection.__init__(self, aliot_obj, traffic_lights, car_sensors)
 
 
 # 3 way intersection configuration

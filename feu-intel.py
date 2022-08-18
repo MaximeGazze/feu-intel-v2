@@ -12,10 +12,11 @@ GPIO.setwarnings(False)
 feu_intel = AliotObj("feu-intel-v2")
 
 intersection = FourWayIntersection(
-    TrafficLight(feu_intel, 'lum', 16, 20, 21),
-    TrafficLight(feu_intel, 'lum', 2, 3, 4),
-    TrafficLight(feu_intel, 'lum', 13, 19, 26),
-    TrafficLight(feu_intel, 'lum', 25, 8, 7),
+    feu_intel,
+    TrafficLight('N', 16, 20, 21),
+    TrafficLight('W', 2, 3, 4),
+    TrafficLight('S', 13, 19, 26),
+    TrafficLight('E', 25, 8, 7),
     DistanceSensor(24, 23),
     DistanceSensor(14, 15),
     DistanceSensor(5, 6),
@@ -25,12 +26,6 @@ intersection = FourWayIntersection(
 def main():
     while True:
         pass
-        # l.red()
-        # sleep(0)
-        # l.yellow()
-        # sleep(0)
-        # l.green()
-        # sleep(0)
 
 def end():
     GPIO.cleanup()
